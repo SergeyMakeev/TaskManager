@@ -88,7 +88,7 @@ namespace MT
 			dequeuePos.StoreRelaxed(0);
 		}
 
-		bool TryPush(T && data)
+		bool TryPush(const T& data)
 		{
 			Cell* cell = nullptr;
 
@@ -123,7 +123,7 @@ namespace MT
 			}
 
 			// successfully found a cell
-			MoveCtor( &cell->data, std::move(data) );
+			cell->data = data;
 			cell->sequence.Store(pos + 1);
 			return true;
 		}
@@ -164,7 +164,7 @@ namespace MT
 			}
 
 			// successfully found a cell
-			MoveCtor( &data, std::move(cell->data) );
+			data = cell->data;
 			cell->sequence.Store(pos + MASK + 1);
 			return true;
 		}
